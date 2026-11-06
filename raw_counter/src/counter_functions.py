@@ -9,6 +9,7 @@ from IPython import get_ipython
 import ipywidgets as widgets
 from IPython.display import display
 from glob import glob
+from collections import deque
 from datetime import datetime
 import time
 from jupyter_ui_poll import ui_events
@@ -244,11 +245,34 @@ def xtract_frames(movie_loc):
     print(len(frames), "frames")
     return frames
 
+BG_INDICES = [24, 32, 42] + list(range(25, 125, 10))   # frames used by background()
+
+def xtract_needed_frames(movie_loc, wanted=BG_INDICES, n_last=10):
+    """Low-memory version of xtract_frames: read the movie once, keeping only the frames
+    in `wanted` (dict index -> frame) and the last n_last frames (list)"""
+    wanted = set(wanted)
+    cap = cv2.VideoCapture(movie_loc)
+    kept, last = {}, deque(maxlen=n_last)   # deque drops the oldest frame automatically
+    i = 0
+    while True:
+        ok, frame = cap.read()
+        if not ok:
+            break
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        if i in wanted:
+            kept[i] = gray
+        last.append(gray)
+        i += 1
+    cap.release()
+
+    print(i, "frames")
+    return kept, list(last)
+
 def background(frames):
     #adjust:
     start_index = 25
     chosen = [frames[i] for i in [24, 32, 42]]
-    chosen2 = frames[start_index:start_index + 100:10]
+    chosen2 = [frames[i] for i in range(start_index, start_index + 100, 10)]   # works for list or dict
     ####
     background1 = np.median(np.stack(chosen), axis=0).astype(np.uint8)
     background2 = np.median(np.stack(chosen2), axis=0).astype(np.uint8)

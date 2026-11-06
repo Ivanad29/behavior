@@ -1,12 +1,15 @@
 
 import cv2
-
 # 1. Rutas de entrada y salida
-video_path_1 = r"C:\Users\ivana\Dropbox\Ivana Ducrey\Doctorado- Drosophila melanogaster\Berlin Lisa\10_29_2026\10_29_2026_movie_0.mp4"
-output_path_1 = r"C:\Users\ivana\Dropbox\Ivana Ducrey\Doctorado- Drosophila melanogaster\Berlin Lisa\10_29_2026\ultimo_frame_0.png"
-
-video_path_2 = r"C:\Users\ivana\Dropbox\Ivana Ducrey\Doctorado- Drosophila melanogaster\Berlin Lisa\10_29_2026\10_29_2026_movie_1.mp4"
-output_path_2 = r"C:\Users\ivana\Dropbox\Ivana Ducrey\Doctorado- Drosophila melanogaster\Berlin Lisa\10_29_2026\ultimo_frame_1.png"
+rout_path= r"C:\Users\ivana\Dropbox\Ivana Ducrey\Doctorado- Drosophila melanogaster\Berlin Lisa\data\multiplex"
+video1 = r"\11_05_2026\11_05_2026_movie_0.mp4"
+video2 = r"\11_05_2026\11_05_2026_movie_1.mp4"
+frame1 = r"\11_05_2026\last_frame_0.png"
+frame2 = r"\11_05_2026\last_frame_1.png"
+video_path_1 = str(rout_path) + str(video1)
+output_path_1 = str(rout_path) + str(frame1)
+video_path_2 = str(rout_path) + str(video2)
+output_path_2 = str(rout_path) + str(frame2)
 
 videos = [video_path_1, video_path_2]
 outputs = [output_path_1, output_path_2]
